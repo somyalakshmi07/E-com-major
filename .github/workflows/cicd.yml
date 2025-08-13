@@ -26,3 +26,5 @@ jobs:
           app-name: Kids-ecom
           publish-profile: ${{ secrets.TES2 }}
           package: .
+      - name: Test connection to Azure App
+        run: curl -I https://Kids-ecom.azurewebsites.net
