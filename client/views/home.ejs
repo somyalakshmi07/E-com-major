@@ -1,76 +1,67 @@
 <%- include('partials/header') %>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h2>Welcome to Little Treasures!</h2>
-                <p>Discover the perfect items for your child's happiness and growth.</p>
-                <a href="#" class="btn">Shop Now</a>
-            </div>
-        </section>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Welcome to Little Treasures!</h2>
+            <p>Discover the perfect items for your child's happiness and growth.</p>
+            <a href="/shop" class="btn">Shop Now</a>
+        </div>
+    </section>
 
-        <section class="categories">
-            <h2>Browse Categories</h2>
-            <div class="category-grid">
-                <% categories.forEach(category => { %>
-                    <div class="category-card">
-                        <div class="category-icon"><%= category.icon %></div>
-                        <h3><%= category.name %></h3>
-                    </div>
-                <% }); %>
-            </div>
-        </section>
-        <section class="products py-5">
-    <div class="container">
-        <h2 class="text-center mb-5">Featured Products</h2>
-        <div class="row">
-            <% products.forEach(product => { %>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= product.name %></h5>
-                        <p class="card-text"><%= product.description %></p>
-                        <p class="price">$<%= product.price.toFixed(2) %></p>
-                        <a href="/products/<%= product._id %>" class="btn btn-primary">View Details</a>
-                    </div>
+    <section class="categories">
+        <h2>Browse Categories</h2>
+        <div class="category-grid">
+            <% categories.forEach(category => { %>
+                <div class="category-card">
+                    <div class="category-icon"><%= category.icon %></div>
+                    <h3><%= category.name %></h3>
                 </div>
-            </div>
             <% }); %>
         </div>
-    </div>
-</section>
+    </section>
 
-        <section class="featured-products">
-            <h2>Featured Products</h2>
-            <div class="product-grid">
-                <% featuredProducts.forEach(product => { %>
-                    <div class="product-card">
-                        <div class="product-image" style="background-image: url('/images/<%= product.image %>')"></div>
-                        <div class="product-info">
-    <h3><%= product.name %></h3>
-    <p class="price">$<%= product.price.toFixed(2) %></p>
-    <form class="add-to-cart-form" data-product-id="<%= product._id %>">
-        <input type="hidden" name="productId" value="<%= product._id %>">
-        <input type="number" name="quantity" value="1" min="1" class="quantity-input">
-        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-    </form>
-</div>
+    <section class="products py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Featured Products</h2>
+            <div class="row">
+                <% if (products && products.length) { %>
+                    <% products.forEach(product => { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= product.name %></h5>
+                                    <p class="card-text">Category: <%= product.category %></p>
+                                    <p class="card-text">Price: $<%= product.price.toFixed(2) %></p>
+                                    <form class="add-to-cart-form" data-product-id="<%= product.id %>">
+                                        <input type="hidden" name="productId" value="<%= product.id %>">
+                                        <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+                                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-12">
+                        <p class="text-center">No products available at the moment.</p>
                     </div>
-                <% }); %>
+                <% } %>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="testimonials">
-            <h2>What Parents Say</h2>
-            <div class="testimonial-slider">
-                <div class="testimonial">
-                    <p>"The quality of products is amazing! My daughter loves her new dress."</p>
-                    <p class="author">- Sarah M.</p>
-                </div>
+    <section class="testimonials">
+        <h2>What Parents Say</h2>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <p>"The quality of products is amazing! My daughter loves her new dress."</p>
+                <p class="author">- Sarah M.</p>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
     <script> // Quantity controls (for all pages)
     document.querySelectorAll('.quantity-btn').forEach(btn => {
         btn.addEventListener('click', function() {

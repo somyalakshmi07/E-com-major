@@ -1,39 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product');
-const { isAdmin } = require('../middleware/auth');
-const upload = require('../middleware/upload'); // For image uploads
+const multer = require('multer');
+const path = require('path');
+const adminController = require('../controllers/adminController');
+
+// Example isAdmin middleware
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    return next();
+  }
+  return res.status(403).send('Access denied');
+};
+
+// Multer storage config
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/uploads'));
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
 // Admin dashboard
-router.get('/dashboard', isAdmin, (req, res) => {
-    res.render('admin/dashboard');
-});
+router.get('/dashboard', isAdmin, adminController.renderAdminPage);
 
-// Add product form
-router.get('/products/add', isAdmin, (req, res) => {
-    res.render('admin/add-product');
-});
-
-// Handle product creation
-router.post('/products', isAdmin, upload.single('image'), async (req, res) => {
-    try {
-        const { name, description, price, category, stock } = req.body;
-        
-        const product = new Product({
-            name,
-            description,
-            price,
-            category,
-            stock,
-            image: req.file ? req.file.path : null
-        });
-
-        await product.save();
-        res.redirect('/admin/dashboard');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
-    }
-});
+// Add product (with image upload)
+router.post('/add-product', isAdmin, upload.single('image'), adminController.addProduct);
 
 module.exports = router;

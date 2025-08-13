@@ -75,6 +75,7 @@ app.get('/', (req, res) => {
     res.render('home', {
         pageTitle: 'Little Treasures - Kids Accessories',
         featuredProducts: products.slice(0, 4),
+        products: products.slice(0, 8), // Add this line to pass products to the template
         categories: [
             { name: 'Clothing', icon: '👚' },
             { name: 'Toys', icon: '🧸' },
@@ -88,7 +89,6 @@ app.get('/', (req, res) => {
         currentPage: 'home'
     });
 });
-
 app.get('/shop', (req, res) => {
     const { category = 'all', sort = 'default', page = 1, search = '' } = req.query;
     const itemsPerPage = 6;
