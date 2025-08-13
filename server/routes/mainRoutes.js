@@ -1,14 +1,12 @@
+// routes/mainRoutes.js
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product'); // <-- CORRECT
+const { ensureAuthenticated } = require('../middleware/authMiddleware');
 
-router.get('/', async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.render('home', { products }); // Pass products to EJS
-  } catch (err) {
-    res.status(500).send('Server Error');
-  }
+router.get('/', (req, res) => {
+  res.render('home', { 
+    currentUser: req.user // Pass the authenticated user from Passport
+  });
 });
 
 module.exports = router;

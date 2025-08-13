@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 const app = express();
 
@@ -12,6 +13,16 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+
+app.use(flash());
+
+// Global variables for views
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.currentUser = req.session.user || null;
+    next();
+});
 
 // Initialize cart and wishlist
 app.use((req, res, next) => {

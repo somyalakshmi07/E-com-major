@@ -1,30 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <%- include('../partials/head') %>
-</head>
-<body>
-    <%- include('../partials/admin-nav') %>
-    
-    <div class="container mt-5">
-        <h2>Admin Dashboard</h2>
-        <div class="row mt-4">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Products</h5>
-                        <p class="card-text">Manage your store products</p>
-                        <a href="/admin/products/add" class="btn btn-primary">Add New Product</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Add more dashboard cards as needed -->
-        </div>
-    </div>
+<%- include('../../partials/header') %>
 
-    <%- include('../partials/footer') %>
-</body>
-</html>
+<div class="admin-dashboard">
+    <h1>Admin Dashboard</h1>
+    <div class="admin-nav">
+        <a href="/admin/products">Manage Products</a>
+        <a href="/admin/users">Manage Users</a>
+        <a href="/admin/orders">View Orders</a>
+    </div>
+    
+    <div class="admin-content">
+        <!-- Content will be loaded here based on navigation -->
+    </div>
+</div>
+
+<script>
+    // Verify admin status on page load
+    document.addEventListener('DOMContentLoaded', async () => {
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+        
+        if (!token || !user || user.role !== 'admin') {
+            window.location.href = '/login';
+            return;
+        }
+        
+        try {
+            // Verify token with server
+            const response = await fetch('/api/auth/admin', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Not authorized');
+            }
+            
+            // Load initial admin content
+            loadAdminContent('products');
+        } catch (error) {
+            console.error('Admin verification failed:', error);
+            window.location.href = '/login';
+        }
+    });
+    
+    async function loadAdminContent(section) {
+        // Implement content loading for each admin section
+    }
+</script>
+
+<%- include('../../partials/footer') %>
