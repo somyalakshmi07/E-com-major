@@ -1,0 +1,140 @@
+<%- include('partials/header') %>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Welcome to Little Treasures!</h2>
+                <p>Discover the perfect items for your child's happiness and growth.</p>
+                <a href="#" class="btn">Shop Now</a>
+            </div>
+        </section>
+
+        <section class="categories">
+            <h2>Browse Categories</h2>
+            <div class="category-grid">
+                <% categories.forEach(category => { %>
+                    <div class="category-card">
+                        <div class="category-icon"><%= category.icon %></div>
+                        <h3><%= category.name %></h3>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+        <section class="products py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Products</h2>
+        <div class="row">
+            <% products.forEach(product => { %>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.name %></h5>
+                        <p class="card-text"><%= product.description %></p>
+                        <p class="price">$<%= product.price.toFixed(2) %></p>
+                        <a href="/products/<%= product._id %>" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+        <section class="featured-products">
+            <h2>Featured Products</h2>
+            <div class="product-grid">
+                <% featuredProducts.forEach(product => { %>
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('/images/<%= product.image %>')"></div>
+                        <div class="product-info">
+    <h3><%= product.name %></h3>
+    <p class="price">$<%= product.price.toFixed(2) %></p>
+    <form class="add-to-cart-form" data-product-id="<%= product._id %>">
+        <input type="hidden" name="productId" value="<%= product._id %>">
+        <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+    </form>
+</div>
+                    </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <h2>What Parents Say</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial">
+                    <p>"The quality of products is amazing! My daughter loves her new dress."</p>
+                    <p class="author">- Sarah M.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script> // Quantity controls (for all pages)
+    document.querySelectorAll('.quantity-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.quantity-input');
+            let value = parseInt(input.value);
+            
+            if (this.classList.contains('plus')) {
+                if (value < parseInt(input.max)) {
+                    input.value = value + 1;
+                }
+            } else {
+                if (value > parseInt(input.min)) {
+                    input.value = value - 1;
+                }
+            }
+        });
+    });
+
+    // Add to cart functionality (for all pages)
+    document.querySelectorAll('.add-to-cart-form').forEach(form => {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                productId: this.querySelector('[name="productId"]').value,
+                quantity: parseInt(this.querySelector('[name="quantity"]').value) || 1
+            };
+
+            try {
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show success message
+                    const successMsg = document.createElement('div');
+                    successMsg.className = 'cart-success-message';
+                    successMsg.textContent = '✓ Added to cart!';
+                    this.appendChild(successMsg);
+                    
+                    // Update cart count in header
+                    if (data.cartItemCount) {
+                        const cartCount = document.querySelector('.cart-count');
+                        if (cartCount) cartCount.textContent = data.cartItemCount;
+                    }
+                    
+                    // Remove message after 2 seconds
+                    setTimeout(() => {
+                        successMsg.remove();
+                    }, 2000);
+                } else {
+                    alert('Error: ' + (data.message || 'Failed to add to cart'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to add to cart. Please try again.');
+            }
+        });
+    });</script>
+
+<%- include('partials/footer') %>

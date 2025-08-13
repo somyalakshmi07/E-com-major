@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <h1>Little Treasures</h1>
+                <p>Everything for your little ones!</p>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Home</a></li>
+                    <li><a href="/shop" class="<%= currentPage === 'shop' ? 'active' : '' %>">Shop</a></li>
+                    <li><a href="/categories" class="<%= currentPage === 'categories' ? 'active' : '' %>">Categories</a></li>
+                    
+                </ul>
+            </nav>
+            <div class="header-icons">
+                <a href="/wishlist" class="wishlist-icon" title="Wishlist">
+                    ♡
+                    <span class="wishlist-count"><%= wishlistCount || 0 %></span>
+                </a>
+                <a href="/cart" class="cart-icon" title="Cart">
+    🛒
+    <% if (typeof cartItemCount !== 'undefined' && cartItemCount > 0) { %>
+        <span class="cart-count"><%= cartItemCount %></span>
+    <% } %>
+</a>
+            </div>
+        </div>
+    </header>
