@@ -3,14 +3,14 @@ name: Build and deploy Node.js app to Azure Web App - Kids-ecom
 on:
   push:
     branches:
-      - main  # Change if you want E-com-major
+      - main  # or E-com-major if you want that branch
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -20,13 +20,9 @@ jobs:
         with:
           node-version: '22.x'
 
-      # Install and build frontend
+      # Install frontend dependencies (Node.js frontend app)
       - name: Install frontend dependencies
         run: npm install
-        working-directory: client
-
-      - name: Build frontend
-        run: npm run build
         working-directory: client
 
       # Install backend dependencies
@@ -34,13 +30,14 @@ jobs:
         run: npm install
         working-directory: server
 
-      # Move frontend build into backend public folder
-      - name: Move frontend build to backend
+      # If backend serves frontend static files, copy them
+      - name: Copy frontend to backend (if needed)
         run: |
           rm -rf server/public
-          mv client/build server/public
+          mkdir -p server/public
+          cp -r client/* server/public/
 
-      # Upload artifact for deployment
+      # Upload backend as artifact
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
