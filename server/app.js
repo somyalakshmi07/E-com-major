@@ -79,9 +79,12 @@ app.use((err, req, res, next) => {
     error: process.env.NODE_ENV === 'development' ? err : null
   });
 });
+app.set('views', path.join(__dirname, '../client/views'));
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, '../client/public')));
 
 // Start server
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`
   Server running in ${process.env.NODE_ENV || 'development'} mode
