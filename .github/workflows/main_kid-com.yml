@@ -49,4 +49,4 @@ jobs:
           app-name: 'kid' # Azure Web App name
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4A62B1A90C874FC7925455153B5F8BA5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE}}
