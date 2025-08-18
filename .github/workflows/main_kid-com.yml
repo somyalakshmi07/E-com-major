@@ -46,11 +46,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-<<<<<<< HEAD
           app-name: 'kid' # Azure Web App name
-=======
-          app-name: 'kid-com'
->>>>>>> f7badc99261bbe4f47eddaf427df4a07fc1cd6b0
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4A62B1A90C874FC7925455153B5F8BA5 }}
