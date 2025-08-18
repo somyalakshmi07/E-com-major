@@ -51,5 +51,5 @@ jobs:
         with:
           app-name: kid
           slot-name: Production
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: release.zip
