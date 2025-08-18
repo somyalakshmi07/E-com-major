@@ -7,9 +7,6 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const morgan = require('morgan');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
-const User = require('../server/models/User'); // Ensure this path is correct
 
 // Initialize Express app
 const app = express();
@@ -47,39 +44,9 @@ app.use(session(sessionConfig));
 app.use(flash());
 
 // Passport.js Setup
+require('./config/passport')(passport); // Load passport configuration
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Passport Local Strategy
-passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user = await User.findOne({ username });
-      if (!user) return done(null, false, { message: 'User not found' });
-
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return done(null, false, { message: 'Incorrect password' });
-
-      return done(null, user);
-    } catch (err) {
-      return done(err);
-    }
-  })
-);
-
-// Serialize/Deserialize User
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});
 
 // Global variables middleware
 app.use((req, res, next) => {
