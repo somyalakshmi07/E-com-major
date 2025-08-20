@@ -291,7 +291,7 @@ app.get('/wishlist/count', (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 app.use(express.static('../client/views')); 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
