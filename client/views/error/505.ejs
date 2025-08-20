@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Little Treasures</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 50px 20px;
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .error-code {
+            font-size: 120px;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin: 0;
+        }
+        .error-message {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #333;
+        }
+        .error-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+            max-width: 600px;
+            text-align: left;
+        }
+        .home-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #4ecdc4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .home-link:hover {
+            background-color: #3bb4ac;
+        }
+    </style>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    
+    <main class="error-container">
+        <h1 class="error-code">500</h1>
+        <p class="error-message">Server Error</p>
+        <p>Something went wrong on our end. Please try again later.</p>
+        
+        <% if (error && process.env.NODE_ENV === 'development') { %>
+            <div class="error-details">
+                <h3>Error Details (Development Only):</h3>
+                <p><strong><%= error.message %></strong></p>
+                <pre><%= error.stack %></pre>
+            </div>
+        <% } %>
+        
+        <a href="/" class="home-link">Go Back Home</a>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
