@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Kids Fun Shop</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/products">All Products</a></li>
+                    <li><a href="/products/category/Toys">Toys</a></li>
+                    <li><a href="/products/category/Arts & Crafts">Arts & Crafts</a></li>
+                    <li><a href="/products/category/Educational">Educational</a></li>
+                    <li><a href="/cart">Cart</a></li>
+                    <% if (session.userId) { %>
+                        <li>Hello, <%= session.username %>!</li>
+                        <li><a href="/auth/logout">Logout</a></li>
+                    <% } else { %>
+                        <li><a href="/auth/login">Login</a></li>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="container">

@@ -1,0 +1,34 @@
+<%- include('partials/header', {title: title}) %>
+        <section class="products-page">
+            <h1>Our Awesome Products</h1>
+            
+            <div class="categories">
+                <h2>Categories</h2>
+                <div class="category-buttons">
+                    <a href="/products" class="btn">All Products</a>
+                    <a href="/products/category/Toys" class="btn">Toys</a>
+                    <a href="/products/category/Arts & Crafts" class="btn">Arts & Crafts</a>
+                    <a href="/products/category/Educational" class="btn">Educational</a>
+                    <a href="/products/category/Sports" class="btn">Sports</a>
+                    <a href="/products/category/Stuffed Animals" class="btn">Stuffed Animals</a>
+                    <a href="/products/category/Costumes" class="btn">Costumes</a>
+                </div>
+            </div>
+            
+            <div class="product-grid">
+                <% if (products.length > 0) { %>
+                    <% products.forEach(function(product) { %>
+                        <div class="product-card">
+                            <img src="<%= product.image_url %>" alt="<%= product.name %>">
+                            <h3><%= product.name %></h3>
+                            <p class="price">$<%= product.price %></p>
+                            <p class="age-range">Ages: <%= product.age_range %></p>
+                            <a href="/products/<%= product.id %>" class="btn">View Details</a>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No products found in this category.</p>
+                <% } %>
+            </div>
+        </section>
+<%- include('partials/footer') %>
