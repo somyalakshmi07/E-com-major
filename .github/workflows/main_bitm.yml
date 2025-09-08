@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read # This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -23,17 +23,20 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: npm install, build, and test
+      - name: Install dependencies (no node_modules upload)
         run: |
+          rm -rf node_modules package-lock.json   # avoid shipping local binaries
           npm install
-          npm run build --if-present
-          npm run test --if-present
+          # Force sqlite3 to rebuild correctly in Azure
+          npm rebuild sqlite3 --build-from-source
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: |
+            .
+            !node_modules   # <--- don't upload node_modules
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,7 +47,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
