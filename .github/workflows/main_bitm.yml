@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies (no node_modules upload)
         run: |
           rm -rf node_modules package-lock.json   # avoid shipping local binaries
-          npm install
+          npm ci
           # Force sqlite3 to rebuild correctly in Azure
           npm rebuild sqlite3 --build-from-source
 
