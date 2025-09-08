@@ -52,4 +52,4 @@ jobs:
           app-name: 'kid-com'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_37CE393C952C49FAA734FED4E597462F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA48A2E4627947BB9AEC094C0CE90531 }}
