@@ -10,7 +10,7 @@ const authRoutes = require('./routes/auth');
 const cartRoutes = require('./routes/cart');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 4000;
 
 // Set up EJS as view engine
 app.set('view engine', 'ejs');
